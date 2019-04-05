@@ -1,0 +1,944 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="AssignmentModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="MCQAssessment">
+          <Key>
+            <PropertyRef Name="MCQAssessmentID" />
+          </Key>
+          <Property Name="MCQAssessmentID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MCQTitle" Type="nvarchar(max)" />
+          <Property Name="MCQLecturerEmail" Type="nvarchar" MaxLength="50" />
+          <Property Name="MCQAssessmentType" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="MCQAssessmentList">
+          <Key>
+            <PropertyRef Name="Email" />
+            <PropertyRef Name="MCQAssessmentID" />
+          </Key>
+          <Property Name="Email" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="MCQAssessmentID" Type="int" Nullable="false" />
+          <Property Name="Completion" Type="nvarchar" MaxLength="50" />
+          <Property Name="Assignment" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="MCQQuestion">
+          <Key>
+            <PropertyRef Name="MCQQuestionID" />
+          </Key>
+          <Property Name="MCQQuestionID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="QuestionTitle" Type="nvarchar(max)" />
+          <Property Name="ChoiceA" Type="nvarchar(max)" />
+          <Property Name="ChoiceB" Type="nvarchar(max)" />
+          <Property Name="ChoiceC" Type="nvarchar(max)" />
+          <Property Name="ChoiceD" Type="nvarchar(max)" />
+          <Property Name="Answer" Type="nvarchar(max)" />
+          <Property Name="MCQAssessmentID" Type="int" />
+        </EntityType>
+        <EntityType Name="MCQResponse">
+          <Key>
+            <PropertyRef Name="MCQQuestionID" />
+            <PropertyRef Name="Email" />
+          </Key>
+          <Property Name="MCQQuestionID" Type="int" Nullable="false" />
+          <Property Name="Email" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="AnswerResponse" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="MCQResult">
+          <Key>
+            <PropertyRef Name="MCQAssessmentID" />
+            <PropertyRef Name="Email" />
+          </Key>
+          <Property Name="MCQAssessmentID" Type="int" Nullable="false" />
+          <Property Name="Email" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Result" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Person">
+          <Key>
+            <PropertyRef Name="Email" />
+          </Key>
+          <Property Name="Email" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" />
+          <Property Name="ContactNumber" Type="nvarchar" MaxLength="50" />
+          <Property Name="Password" Type="nvarchar" MaxLength="50" />
+          <Property Name="ProfileImage" Type="nvarchar" MaxLength="100" />
+          <Property Name="Status" Type="nvarchar" MaxLength="50" />
+          <Property Name="Gender" Type="nchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="WrittenAssessment">
+          <Key>
+            <PropertyRef Name="WrittenID" />
+          </Key>
+          <Property Name="WrittenID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="WrittenTitle" Type="nvarchar(max)" />
+          <Property Name="WrittenLectureEmail" Type="nvarchar" MaxLength="50" />
+          <Property Name="WrittenAssessmentType" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="WrittenAssessmentList">
+          <Key>
+            <PropertyRef Name="Email" />
+            <PropertyRef Name="WrittenID" />
+          </Key>
+          <Property Name="Email" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="WrittenID" Type="int" Nullable="false" />
+          <Property Name="Completion" Type="nvarchar" MaxLength="50" />
+          <Property Name="Assignment" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="WrittenQuestion">
+          <Key>
+            <PropertyRef Name="WrittenQuestionID" />
+          </Key>
+          <Property Name="WrittenQuestionID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="QuestionTitle" Type="nvarchar(max)" />
+          <Property Name="WrittenID" Type="int" />
+          <Property Name="MaximumScore" Type="int" />
+        </EntityType>
+        <EntityType Name="WrittenResponse">
+          <Key>
+            <PropertyRef Name="WrittenQuestionID" />
+            <PropertyRef Name="Email" />
+          </Key>
+          <Property Name="WrittenQuestionID" Type="int" Nullable="false" />
+          <Property Name="Email" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="AnswerResponse" Type="nvarchar(max)" />
+          <Property Name="Mark" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="WrittenResult">
+          <Key>
+            <PropertyRef Name="WrittenID" />
+            <PropertyRef Name="Email" />
+          </Key>
+          <Property Name="WrittenID" Type="int" Nullable="false" />
+          <Property Name="Email" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Result" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <Association Name="FK_MCQAssessment_ToTable">
+          <End Role="Person" Type="Self.Person" Multiplicity="0..1" />
+          <End Role="MCQAssessment" Type="Self.MCQAssessment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="Email" />
+            </Principal>
+            <Dependent Role="MCQAssessment">
+              <PropertyRef Name="MCQLecturerEmail" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MCQAssessmentList_ToTable">
+          <End Role="Person" Type="Self.Person" Multiplicity="1" />
+          <End Role="MCQAssessmentList" Type="Self.MCQAssessmentList" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="Email" />
+            </Principal>
+            <Dependent Role="MCQAssessmentList">
+              <PropertyRef Name="Email" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MCQAssessmentList_ToTable_1">
+          <End Role="MCQAssessment" Type="Self.MCQAssessment" Multiplicity="1" />
+          <End Role="MCQAssessmentList" Type="Self.MCQAssessmentList" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MCQAssessment">
+              <PropertyRef Name="MCQAssessmentID" />
+            </Principal>
+            <Dependent Role="MCQAssessmentList">
+              <PropertyRef Name="MCQAssessmentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MCQQuestion_ToTable">
+          <End Role="MCQAssessment" Type="Self.MCQAssessment" Multiplicity="0..1" />
+          <End Role="MCQQuestion" Type="Self.MCQQuestion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MCQAssessment">
+              <PropertyRef Name="MCQAssessmentID" />
+            </Principal>
+            <Dependent Role="MCQQuestion">
+              <PropertyRef Name="MCQAssessmentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MCQResponse_ToTable">
+          <End Role="MCQQuestion" Type="Self.MCQQuestion" Multiplicity="1" />
+          <End Role="MCQResponse" Type="Self.MCQResponse" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MCQQuestion">
+              <PropertyRef Name="MCQQuestionID" />
+            </Principal>
+            <Dependent Role="MCQResponse">
+              <PropertyRef Name="MCQQuestionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MCQResponse_ToTable_1">
+          <End Role="Person" Type="Self.Person" Multiplicity="1" />
+          <End Role="MCQResponse" Type="Self.MCQResponse" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="Email" />
+            </Principal>
+            <Dependent Role="MCQResponse">
+              <PropertyRef Name="Email" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MCQResult_ToTable">
+          <End Role="MCQAssessment" Type="Self.MCQAssessment" Multiplicity="1" />
+          <End Role="MCQResult" Type="Self.MCQResult" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MCQAssessment">
+              <PropertyRef Name="MCQAssessmentID" />
+            </Principal>
+            <Dependent Role="MCQResult">
+              <PropertyRef Name="MCQAssessmentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MCQResult_ToTable_1">
+          <End Role="Person" Type="Self.Person" Multiplicity="1" />
+          <End Role="MCQResult" Type="Self.MCQResult" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="Email" />
+            </Principal>
+            <Dependent Role="MCQResult">
+              <PropertyRef Name="Email" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WrittenAssessment_ToTable">
+          <End Role="Person" Type="Self.Person" Multiplicity="0..1" />
+          <End Role="WrittenAssessment" Type="Self.WrittenAssessment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="Email" />
+            </Principal>
+            <Dependent Role="WrittenAssessment">
+              <PropertyRef Name="WrittenLectureEmail" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WrittenAssessmentList_ToTable">
+          <End Role="Person" Type="Self.Person" Multiplicity="1" />
+          <End Role="WrittenAssessmentList" Type="Self.WrittenAssessmentList" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="Email" />
+            </Principal>
+            <Dependent Role="WrittenAssessmentList">
+              <PropertyRef Name="Email" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WrittenAssessmentList_ToTable_1">
+          <End Role="WrittenAssessment" Type="Self.WrittenAssessment" Multiplicity="1" />
+          <End Role="WrittenAssessmentList" Type="Self.WrittenAssessmentList" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WrittenAssessment">
+              <PropertyRef Name="WrittenID" />
+            </Principal>
+            <Dependent Role="WrittenAssessmentList">
+              <PropertyRef Name="WrittenID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WrittenQuestion_ToTable">
+          <End Role="WrittenAssessment" Type="Self.WrittenAssessment" Multiplicity="0..1" />
+          <End Role="WrittenQuestion" Type="Self.WrittenQuestion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WrittenAssessment">
+              <PropertyRef Name="WrittenID" />
+            </Principal>
+            <Dependent Role="WrittenQuestion">
+              <PropertyRef Name="WrittenID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WrittenResponse_ToTable">
+          <End Role="WrittenQuestion" Type="Self.WrittenQuestion" Multiplicity="1" />
+          <End Role="WrittenResponse" Type="Self.WrittenResponse" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WrittenQuestion">
+              <PropertyRef Name="WrittenQuestionID" />
+            </Principal>
+            <Dependent Role="WrittenResponse">
+              <PropertyRef Name="WrittenQuestionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WrittenResponse_ToTable_1">
+          <End Role="Person" Type="Self.Person" Multiplicity="1" />
+          <End Role="WrittenResponse" Type="Self.WrittenResponse" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="Email" />
+            </Principal>
+            <Dependent Role="WrittenResponse">
+              <PropertyRef Name="Email" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WrittenResult_ToTable">
+          <End Role="WrittenAssessment" Type="Self.WrittenAssessment" Multiplicity="1" />
+          <End Role="WrittenResult" Type="Self.WrittenResult" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WrittenAssessment">
+              <PropertyRef Name="WrittenID" />
+            </Principal>
+            <Dependent Role="WrittenResult">
+              <PropertyRef Name="WrittenID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WrittenResult_ToTable_1">
+          <End Role="Person" Type="Self.Person" Multiplicity="1" />
+          <End Role="WrittenResult" Type="Self.WrittenResult" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="Email" />
+            </Principal>
+            <Dependent Role="WrittenResult">
+              <PropertyRef Name="Email" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="AssignmentModelStoreContainer">
+          <EntitySet Name="MCQAssessment" EntityType="Self.MCQAssessment" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MCQAssessmentList" EntityType="Self.MCQAssessmentList" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MCQQuestion" EntityType="Self.MCQQuestion" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MCQResponse" EntityType="Self.MCQResponse" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MCQResult" EntityType="Self.MCQResult" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Person" EntityType="Self.Person" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="WrittenAssessment" EntityType="Self.WrittenAssessment" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="WrittenAssessmentList" EntityType="Self.WrittenAssessmentList" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="WrittenQuestion" EntityType="Self.WrittenQuestion" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="WrittenResponse" EntityType="Self.WrittenResponse" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="WrittenResult" EntityType="Self.WrittenResult" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_MCQAssessment_ToTable" Association="Self.FK_MCQAssessment_ToTable">
+            <End Role="Person" EntitySet="Person" />
+            <End Role="MCQAssessment" EntitySet="MCQAssessment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MCQAssessmentList_ToTable" Association="Self.FK_MCQAssessmentList_ToTable">
+            <End Role="Person" EntitySet="Person" />
+            <End Role="MCQAssessmentList" EntitySet="MCQAssessmentList" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MCQAssessmentList_ToTable_1" Association="Self.FK_MCQAssessmentList_ToTable_1">
+            <End Role="MCQAssessment" EntitySet="MCQAssessment" />
+            <End Role="MCQAssessmentList" EntitySet="MCQAssessmentList" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MCQQuestion_ToTable" Association="Self.FK_MCQQuestion_ToTable">
+            <End Role="MCQAssessment" EntitySet="MCQAssessment" />
+            <End Role="MCQQuestion" EntitySet="MCQQuestion" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MCQResponse_ToTable" Association="Self.FK_MCQResponse_ToTable">
+            <End Role="MCQQuestion" EntitySet="MCQQuestion" />
+            <End Role="MCQResponse" EntitySet="MCQResponse" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MCQResponse_ToTable_1" Association="Self.FK_MCQResponse_ToTable_1">
+            <End Role="Person" EntitySet="Person" />
+            <End Role="MCQResponse" EntitySet="MCQResponse" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MCQResult_ToTable" Association="Self.FK_MCQResult_ToTable">
+            <End Role="MCQAssessment" EntitySet="MCQAssessment" />
+            <End Role="MCQResult" EntitySet="MCQResult" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MCQResult_ToTable_1" Association="Self.FK_MCQResult_ToTable_1">
+            <End Role="Person" EntitySet="Person" />
+            <End Role="MCQResult" EntitySet="MCQResult" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WrittenAssessment_ToTable" Association="Self.FK_WrittenAssessment_ToTable">
+            <End Role="Person" EntitySet="Person" />
+            <End Role="WrittenAssessment" EntitySet="WrittenAssessment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WrittenAssessmentList_ToTable" Association="Self.FK_WrittenAssessmentList_ToTable">
+            <End Role="Person" EntitySet="Person" />
+            <End Role="WrittenAssessmentList" EntitySet="WrittenAssessmentList" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WrittenAssessmentList_ToTable_1" Association="Self.FK_WrittenAssessmentList_ToTable_1">
+            <End Role="WrittenAssessment" EntitySet="WrittenAssessment" />
+            <End Role="WrittenAssessmentList" EntitySet="WrittenAssessmentList" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WrittenQuestion_ToTable" Association="Self.FK_WrittenQuestion_ToTable">
+            <End Role="WrittenAssessment" EntitySet="WrittenAssessment" />
+            <End Role="WrittenQuestion" EntitySet="WrittenQuestion" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WrittenResponse_ToTable" Association="Self.FK_WrittenResponse_ToTable">
+            <End Role="WrittenQuestion" EntitySet="WrittenQuestion" />
+            <End Role="WrittenResponse" EntitySet="WrittenResponse" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WrittenResponse_ToTable_1" Association="Self.FK_WrittenResponse_ToTable_1">
+            <End Role="Person" EntitySet="Person" />
+            <End Role="WrittenResponse" EntitySet="WrittenResponse" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WrittenResult_ToTable" Association="Self.FK_WrittenResult_ToTable">
+            <End Role="WrittenAssessment" EntitySet="WrittenAssessment" />
+            <End Role="WrittenResult" EntitySet="WrittenResult" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WrittenResult_ToTable_1" Association="Self.FK_WrittenResult_ToTable_1">
+            <End Role="Person" EntitySet="Person" />
+            <End Role="WrittenResult" EntitySet="WrittenResult" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="AssignmentModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="MCQAssessment">
+          <Key>
+            <PropertyRef Name="MCQAssessmentID" />
+          </Key>
+          <Property Name="MCQAssessmentID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MCQTitle" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="MCQLecturerEmail" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MCQAssessmentType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Person" Relationship="Self.FK_MCQAssessment_ToTable" FromRole="MCQAssessment" ToRole="Person" />
+          <NavigationProperty Name="MCQAssessmentLists" Relationship="Self.FK_MCQAssessmentList_ToTable_1" FromRole="MCQAssessment" ToRole="MCQAssessmentList" />
+          <NavigationProperty Name="MCQQuestions" Relationship="Self.FK_MCQQuestion_ToTable" FromRole="MCQAssessment" ToRole="MCQQuestion" />
+          <NavigationProperty Name="MCQResults" Relationship="Self.FK_MCQResult_ToTable" FromRole="MCQAssessment" ToRole="MCQResult" />
+        </EntityType>
+        <EntityType Name="MCQAssessmentList">
+          <Key>
+            <PropertyRef Name="Email" />
+            <PropertyRef Name="MCQAssessmentID" />
+          </Key>
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="MCQAssessmentID" Type="Int32" Nullable="false" />
+          <Property Name="Completion" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Assignment" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="MCQAssessment" Relationship="Self.FK_MCQAssessmentList_ToTable_1" FromRole="MCQAssessmentList" ToRole="MCQAssessment" />
+          <NavigationProperty Name="Person" Relationship="Self.FK_MCQAssessmentList_ToTable" FromRole="MCQAssessmentList" ToRole="Person" />
+        </EntityType>
+        <EntityType Name="MCQQuestion">
+          <Key>
+            <PropertyRef Name="MCQQuestionID" />
+          </Key>
+          <Property Name="MCQQuestionID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="QuestionTitle" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ChoiceA" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ChoiceB" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ChoiceC" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ChoiceD" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Answer" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="MCQAssessmentID" Type="Int32" />
+          <NavigationProperty Name="MCQAssessment" Relationship="Self.FK_MCQQuestion_ToTable" FromRole="MCQQuestion" ToRole="MCQAssessment" />
+          <NavigationProperty Name="MCQResponses" Relationship="Self.FK_MCQResponse_ToTable" FromRole="MCQQuestion" ToRole="MCQResponse" />
+        </EntityType>
+        <EntityType Name="MCQResponse">
+          <Key>
+            <PropertyRef Name="MCQQuestionID" />
+            <PropertyRef Name="Email" />
+          </Key>
+          <Property Name="MCQQuestionID" Type="Int32" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="AnswerResponse" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="MCQQuestion" Relationship="Self.FK_MCQResponse_ToTable" FromRole="MCQResponse" ToRole="MCQQuestion" />
+          <NavigationProperty Name="Person" Relationship="Self.FK_MCQResponse_ToTable_1" FromRole="MCQResponse" ToRole="Person" />
+        </EntityType>
+        <EntityType Name="MCQResult">
+          <Key>
+            <PropertyRef Name="MCQAssessmentID" />
+            <PropertyRef Name="Email" />
+          </Key>
+          <Property Name="MCQAssessmentID" Type="Int32" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Result" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="MCQAssessment" Relationship="Self.FK_MCQResult_ToTable" FromRole="MCQResult" ToRole="MCQAssessment" />
+          <NavigationProperty Name="Person" Relationship="Self.FK_MCQResult_ToTable_1" FromRole="MCQResult" ToRole="Person" />
+        </EntityType>
+        <EntityType Name="Person">
+          <Key>
+            <PropertyRef Name="Email" />
+          </Key>
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ContactNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ProfileImage" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Status" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Gender" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="MCQAssessments" Relationship="Self.FK_MCQAssessment_ToTable" FromRole="Person" ToRole="MCQAssessment" />
+          <NavigationProperty Name="MCQAssessmentLists" Relationship="Self.FK_MCQAssessmentList_ToTable" FromRole="Person" ToRole="MCQAssessmentList" />
+          <NavigationProperty Name="MCQResponses" Relationship="Self.FK_MCQResponse_ToTable_1" FromRole="Person" ToRole="MCQResponse" />
+          <NavigationProperty Name="MCQResults" Relationship="Self.FK_MCQResult_ToTable_1" FromRole="Person" ToRole="MCQResult" />
+          <NavigationProperty Name="WrittenAssessments" Relationship="Self.FK_WrittenAssessment_ToTable" FromRole="Person" ToRole="WrittenAssessment" />
+          <NavigationProperty Name="WrittenAssessmentLists" Relationship="Self.FK_WrittenAssessmentList_ToTable" FromRole="Person" ToRole="WrittenAssessmentList" />
+          <NavigationProperty Name="WrittenResponses" Relationship="Self.FK_WrittenResponse_ToTable_1" FromRole="Person" ToRole="WrittenResponse" />
+          <NavigationProperty Name="WrittenResults" Relationship="Self.FK_WrittenResult_ToTable_1" FromRole="Person" ToRole="WrittenResult" />
+        </EntityType>
+        <EntityType Name="WrittenAssessment">
+          <Key>
+            <PropertyRef Name="WrittenID" />
+          </Key>
+          <Property Name="WrittenID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="WrittenTitle" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="WrittenLectureEmail" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="WrittenAssessmentType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Person" Relationship="Self.FK_WrittenAssessment_ToTable" FromRole="WrittenAssessment" ToRole="Person" />
+          <NavigationProperty Name="WrittenAssessmentLists" Relationship="Self.FK_WrittenAssessmentList_ToTable_1" FromRole="WrittenAssessment" ToRole="WrittenAssessmentList" />
+          <NavigationProperty Name="WrittenQuestions" Relationship="Self.FK_WrittenQuestion_ToTable" FromRole="WrittenAssessment" ToRole="WrittenQuestion" />
+          <NavigationProperty Name="WrittenResults" Relationship="Self.FK_WrittenResult_ToTable" FromRole="WrittenAssessment" ToRole="WrittenResult" />
+        </EntityType>
+        <EntityType Name="WrittenAssessmentList">
+          <Key>
+            <PropertyRef Name="Email" />
+            <PropertyRef Name="WrittenID" />
+          </Key>
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="WrittenID" Type="Int32" Nullable="false" />
+          <Property Name="Completion" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Assignment" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Person" Relationship="Self.FK_WrittenAssessmentList_ToTable" FromRole="WrittenAssessmentList" ToRole="Person" />
+          <NavigationProperty Name="WrittenAssessment" Relationship="Self.FK_WrittenAssessmentList_ToTable_1" FromRole="WrittenAssessmentList" ToRole="WrittenAssessment" />
+        </EntityType>
+        <EntityType Name="WrittenQuestion">
+          <Key>
+            <PropertyRef Name="WrittenQuestionID" />
+          </Key>
+          <Property Name="WrittenQuestionID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="QuestionTitle" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="WrittenID" Type="Int32" />
+          <Property Name="MaximumScore" Type="Int32" />
+          <NavigationProperty Name="WrittenAssessment" Relationship="Self.FK_WrittenQuestion_ToTable" FromRole="WrittenQuestion" ToRole="WrittenAssessment" />
+          <NavigationProperty Name="WrittenResponses" Relationship="Self.FK_WrittenResponse_ToTable" FromRole="WrittenQuestion" ToRole="WrittenResponse" />
+        </EntityType>
+        <EntityType Name="WrittenResponse">
+          <Key>
+            <PropertyRef Name="WrittenQuestionID" />
+            <PropertyRef Name="Email" />
+          </Key>
+          <Property Name="WrittenQuestionID" Type="Int32" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="AnswerResponse" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Mark" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Person" Relationship="Self.FK_WrittenResponse_ToTable_1" FromRole="WrittenResponse" ToRole="Person" />
+          <NavigationProperty Name="WrittenQuestion" Relationship="Self.FK_WrittenResponse_ToTable" FromRole="WrittenResponse" ToRole="WrittenQuestion" />
+        </EntityType>
+        <EntityType Name="WrittenResult">
+          <Key>
+            <PropertyRef Name="WrittenID" />
+            <PropertyRef Name="Email" />
+          </Key>
+          <Property Name="WrittenID" Type="Int32" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Result" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Person" Relationship="Self.FK_WrittenResult_ToTable_1" FromRole="WrittenResult" ToRole="Person" />
+          <NavigationProperty Name="WrittenAssessment" Relationship="Self.FK_WrittenResult_ToTable" FromRole="WrittenResult" ToRole="WrittenAssessment" />
+        </EntityType>
+        <Association Name="FK_MCQAssessment_ToTable">
+          <End Role="Person" Type="Self.Person" Multiplicity="0..1" />
+          <End Role="MCQAssessment" Type="Self.MCQAssessment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="Email" />
+            </Principal>
+            <Dependent Role="MCQAssessment">
+              <PropertyRef Name="MCQLecturerEmail" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MCQAssessmentList_ToTable_1">
+          <End Role="MCQAssessment" Type="Self.MCQAssessment" Multiplicity="1" />
+          <End Role="MCQAssessmentList" Type="Self.MCQAssessmentList" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MCQAssessment">
+              <PropertyRef Name="MCQAssessmentID" />
+            </Principal>
+            <Dependent Role="MCQAssessmentList">
+              <PropertyRef Name="MCQAssessmentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MCQQuestion_ToTable">
+          <End Role="MCQAssessment" Type="Self.MCQAssessment" Multiplicity="0..1" />
+          <End Role="MCQQuestion" Type="Self.MCQQuestion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MCQAssessment">
+              <PropertyRef Name="MCQAssessmentID" />
+            </Principal>
+            <Dependent Role="MCQQuestion">
+              <PropertyRef Name="MCQAssessmentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MCQResult_ToTable">
+          <End Role="MCQAssessment" Type="Self.MCQAssessment" Multiplicity="1" />
+          <End Role="MCQResult" Type="Self.MCQResult" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MCQAssessment">
+              <PropertyRef Name="MCQAssessmentID" />
+            </Principal>
+            <Dependent Role="MCQResult">
+              <PropertyRef Name="MCQAssessmentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MCQAssessmentList_ToTable">
+          <End Role="Person" Type="Self.Person" Multiplicity="1" />
+          <End Role="MCQAssessmentList" Type="Self.MCQAssessmentList" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="Email" />
+            </Principal>
+            <Dependent Role="MCQAssessmentList">
+              <PropertyRef Name="Email" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MCQResponse_ToTable">
+          <End Role="MCQQuestion" Type="Self.MCQQuestion" Multiplicity="1" />
+          <End Role="MCQResponse" Type="Self.MCQResponse" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MCQQuestion">
+              <PropertyRef Name="MCQQuestionID" />
+            </Principal>
+            <Dependent Role="MCQResponse">
+              <PropertyRef Name="MCQQuestionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MCQResponse_ToTable_1">
+          <End Role="Person" Type="Self.Person" Multiplicity="1" />
+          <End Role="MCQResponse" Type="Self.MCQResponse" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="Email" />
+            </Principal>
+            <Dependent Role="MCQResponse">
+              <PropertyRef Name="Email" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MCQResult_ToTable_1">
+          <End Role="Person" Type="Self.Person" Multiplicity="1" />
+          <End Role="MCQResult" Type="Self.MCQResult" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="Email" />
+            </Principal>
+            <Dependent Role="MCQResult">
+              <PropertyRef Name="Email" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WrittenAssessment_ToTable">
+          <End Role="Person" Type="Self.Person" Multiplicity="0..1" />
+          <End Role="WrittenAssessment" Type="Self.WrittenAssessment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="Email" />
+            </Principal>
+            <Dependent Role="WrittenAssessment">
+              <PropertyRef Name="WrittenLectureEmail" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WrittenAssessmentList_ToTable">
+          <End Role="Person" Type="Self.Person" Multiplicity="1" />
+          <End Role="WrittenAssessmentList" Type="Self.WrittenAssessmentList" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="Email" />
+            </Principal>
+            <Dependent Role="WrittenAssessmentList">
+              <PropertyRef Name="Email" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WrittenResponse_ToTable_1">
+          <End Role="Person" Type="Self.Person" Multiplicity="1" />
+          <End Role="WrittenResponse" Type="Self.WrittenResponse" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="Email" />
+            </Principal>
+            <Dependent Role="WrittenResponse">
+              <PropertyRef Name="Email" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WrittenResult_ToTable_1">
+          <End Role="Person" Type="Self.Person" Multiplicity="1" />
+          <End Role="WrittenResult" Type="Self.WrittenResult" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="Email" />
+            </Principal>
+            <Dependent Role="WrittenResult">
+              <PropertyRef Name="Email" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WrittenAssessmentList_ToTable_1">
+          <End Role="WrittenAssessment" Type="Self.WrittenAssessment" Multiplicity="1" />
+          <End Role="WrittenAssessmentList" Type="Self.WrittenAssessmentList" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WrittenAssessment">
+              <PropertyRef Name="WrittenID" />
+            </Principal>
+            <Dependent Role="WrittenAssessmentList">
+              <PropertyRef Name="WrittenID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WrittenQuestion_ToTable">
+          <End Role="WrittenAssessment" Type="Self.WrittenAssessment" Multiplicity="0..1" />
+          <End Role="WrittenQuestion" Type="Self.WrittenQuestion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WrittenAssessment">
+              <PropertyRef Name="WrittenID" />
+            </Principal>
+            <Dependent Role="WrittenQuestion">
+              <PropertyRef Name="WrittenID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WrittenResult_ToTable">
+          <End Role="WrittenAssessment" Type="Self.WrittenAssessment" Multiplicity="1" />
+          <End Role="WrittenResult" Type="Self.WrittenResult" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WrittenAssessment">
+              <PropertyRef Name="WrittenID" />
+            </Principal>
+            <Dependent Role="WrittenResult">
+              <PropertyRef Name="WrittenID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WrittenResponse_ToTable">
+          <End Role="WrittenQuestion" Type="Self.WrittenQuestion" Multiplicity="1" />
+          <End Role="WrittenResponse" Type="Self.WrittenResponse" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WrittenQuestion">
+              <PropertyRef Name="WrittenQuestionID" />
+            </Principal>
+            <Dependent Role="WrittenResponse">
+              <PropertyRef Name="WrittenQuestionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="AssignmentEntities1" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="MCQAssessments" EntityType="Self.MCQAssessment" />
+          <EntitySet Name="MCQAssessmentLists" EntityType="Self.MCQAssessmentList" />
+          <EntitySet Name="MCQQuestions" EntityType="Self.MCQQuestion" />
+          <EntitySet Name="MCQResponses" EntityType="Self.MCQResponse" />
+          <EntitySet Name="MCQResults" EntityType="Self.MCQResult" />
+          <EntitySet Name="People" EntityType="Self.Person" />
+          <EntitySet Name="WrittenAssessments" EntityType="Self.WrittenAssessment" />
+          <EntitySet Name="WrittenAssessmentLists" EntityType="Self.WrittenAssessmentList" />
+          <EntitySet Name="WrittenQuestions" EntityType="Self.WrittenQuestion" />
+          <EntitySet Name="WrittenResponses" EntityType="Self.WrittenResponse" />
+          <EntitySet Name="WrittenResults" EntityType="Self.WrittenResult" />
+          <AssociationSet Name="FK_MCQAssessment_ToTable" Association="Self.FK_MCQAssessment_ToTable">
+            <End Role="Person" EntitySet="People" />
+            <End Role="MCQAssessment" EntitySet="MCQAssessments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MCQAssessmentList_ToTable_1" Association="Self.FK_MCQAssessmentList_ToTable_1">
+            <End Role="MCQAssessment" EntitySet="MCQAssessments" />
+            <End Role="MCQAssessmentList" EntitySet="MCQAssessmentLists" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MCQQuestion_ToTable" Association="Self.FK_MCQQuestion_ToTable">
+            <End Role="MCQAssessment" EntitySet="MCQAssessments" />
+            <End Role="MCQQuestion" EntitySet="MCQQuestions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MCQResult_ToTable" Association="Self.FK_MCQResult_ToTable">
+            <End Role="MCQAssessment" EntitySet="MCQAssessments" />
+            <End Role="MCQResult" EntitySet="MCQResults" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MCQAssessmentList_ToTable" Association="Self.FK_MCQAssessmentList_ToTable">
+            <End Role="Person" EntitySet="People" />
+            <End Role="MCQAssessmentList" EntitySet="MCQAssessmentLists" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MCQResponse_ToTable" Association="Self.FK_MCQResponse_ToTable">
+            <End Role="MCQQuestion" EntitySet="MCQQuestions" />
+            <End Role="MCQResponse" EntitySet="MCQResponses" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MCQResponse_ToTable_1" Association="Self.FK_MCQResponse_ToTable_1">
+            <End Role="Person" EntitySet="People" />
+            <End Role="MCQResponse" EntitySet="MCQResponses" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MCQResult_ToTable_1" Association="Self.FK_MCQResult_ToTable_1">
+            <End Role="Person" EntitySet="People" />
+            <End Role="MCQResult" EntitySet="MCQResults" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WrittenAssessment_ToTable" Association="Self.FK_WrittenAssessment_ToTable">
+            <End Role="Person" EntitySet="People" />
+            <End Role="WrittenAssessment" EntitySet="WrittenAssessments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WrittenAssessmentList_ToTable" Association="Self.FK_WrittenAssessmentList_ToTable">
+            <End Role="Person" EntitySet="People" />
+            <End Role="WrittenAssessmentList" EntitySet="WrittenAssessmentLists" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WrittenResponse_ToTable_1" Association="Self.FK_WrittenResponse_ToTable_1">
+            <End Role="Person" EntitySet="People" />
+            <End Role="WrittenResponse" EntitySet="WrittenResponses" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WrittenResult_ToTable_1" Association="Self.FK_WrittenResult_ToTable_1">
+            <End Role="Person" EntitySet="People" />
+            <End Role="WrittenResult" EntitySet="WrittenResults" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WrittenAssessmentList_ToTable_1" Association="Self.FK_WrittenAssessmentList_ToTable_1">
+            <End Role="WrittenAssessment" EntitySet="WrittenAssessments" />
+            <End Role="WrittenAssessmentList" EntitySet="WrittenAssessmentLists" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WrittenQuestion_ToTable" Association="Self.FK_WrittenQuestion_ToTable">
+            <End Role="WrittenAssessment" EntitySet="WrittenAssessments" />
+            <End Role="WrittenQuestion" EntitySet="WrittenQuestions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WrittenResult_ToTable" Association="Self.FK_WrittenResult_ToTable">
+            <End Role="WrittenAssessment" EntitySet="WrittenAssessments" />
+            <End Role="WrittenResult" EntitySet="WrittenResults" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WrittenResponse_ToTable" Association="Self.FK_WrittenResponse_ToTable">
+            <End Role="WrittenQuestion" EntitySet="WrittenQuestions" />
+            <End Role="WrittenResponse" EntitySet="WrittenResponses" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="AssignmentModelStoreContainer" CdmEntityContainer="AssignmentEntities1">
+          <EntitySetMapping Name="MCQAssessments">
+            <EntityTypeMapping TypeName="AssignmentModel.MCQAssessment">
+              <MappingFragment StoreEntitySet="MCQAssessment">
+                <ScalarProperty Name="MCQAssessmentID" ColumnName="MCQAssessmentID" />
+                <ScalarProperty Name="MCQTitle" ColumnName="MCQTitle" />
+                <ScalarProperty Name="MCQLecturerEmail" ColumnName="MCQLecturerEmail" />
+                <ScalarProperty Name="MCQAssessmentType" ColumnName="MCQAssessmentType" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MCQAssessmentLists">
+            <EntityTypeMapping TypeName="AssignmentModel.MCQAssessmentList">
+              <MappingFragment StoreEntitySet="MCQAssessmentList">
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="MCQAssessmentID" ColumnName="MCQAssessmentID" />
+                <ScalarProperty Name="Completion" ColumnName="Completion" />
+                <ScalarProperty Name="Assignment" ColumnName="Assignment" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MCQQuestions">
+            <EntityTypeMapping TypeName="AssignmentModel.MCQQuestion">
+              <MappingFragment StoreEntitySet="MCQQuestion">
+                <ScalarProperty Name="MCQQuestionID" ColumnName="MCQQuestionID" />
+                <ScalarProperty Name="QuestionTitle" ColumnName="QuestionTitle" />
+                <ScalarProperty Name="ChoiceA" ColumnName="ChoiceA" />
+                <ScalarProperty Name="ChoiceB" ColumnName="ChoiceB" />
+                <ScalarProperty Name="ChoiceC" ColumnName="ChoiceC" />
+                <ScalarProperty Name="ChoiceD" ColumnName="ChoiceD" />
+                <ScalarProperty Name="Answer" ColumnName="Answer" />
+                <ScalarProperty Name="MCQAssessmentID" ColumnName="MCQAssessmentID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MCQResponses">
+            <EntityTypeMapping TypeName="AssignmentModel.MCQResponse">
+              <MappingFragment StoreEntitySet="MCQResponse">
+                <ScalarProperty Name="MCQQuestionID" ColumnName="MCQQuestionID" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="AnswerResponse" ColumnName="AnswerResponse" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MCQResults">
+            <EntityTypeMapping TypeName="AssignmentModel.MCQResult">
+              <MappingFragment StoreEntitySet="MCQResult">
+                <ScalarProperty Name="MCQAssessmentID" ColumnName="MCQAssessmentID" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Result" ColumnName="Result" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="People">
+            <EntityTypeMapping TypeName="AssignmentModel.Person">
+              <MappingFragment StoreEntitySet="Person">
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ContactNumber" ColumnName="ContactNumber" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="ProfileImage" ColumnName="ProfileImage" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Gender" ColumnName="Gender" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="WrittenAssessments">
+            <EntityTypeMapping TypeName="AssignmentModel.WrittenAssessment">
+              <MappingFragment StoreEntitySet="WrittenAssessment">
+                <ScalarProperty Name="WrittenID" ColumnName="WrittenID" />
+                <ScalarProperty Name="WrittenTitle" ColumnName="WrittenTitle" />
+                <ScalarProperty Name="WrittenLectureEmail" ColumnName="WrittenLectureEmail" />
+                <ScalarProperty Name="WrittenAssessmentType" ColumnName="WrittenAssessmentType" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="WrittenAssessmentLists">
+            <EntityTypeMapping TypeName="AssignmentModel.WrittenAssessmentList">
+              <MappingFragment StoreEntitySet="WrittenAssessmentList">
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="WrittenID" ColumnName="WrittenID" />
+                <ScalarProperty Name="Completion" ColumnName="Completion" />
+                <ScalarProperty Name="Assignment" ColumnName="Assignment" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="WrittenQuestions">
+            <EntityTypeMapping TypeName="AssignmentModel.WrittenQuestion">
+              <MappingFragment StoreEntitySet="WrittenQuestion">
+                <ScalarProperty Name="WrittenQuestionID" ColumnName="WrittenQuestionID" />
+                <ScalarProperty Name="QuestionTitle" ColumnName="QuestionTitle" />
+                <ScalarProperty Name="WrittenID" ColumnName="WrittenID" />
+                <ScalarProperty Name="MaximumScore" ColumnName="MaximumScore" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="WrittenResponses">
+            <EntityTypeMapping TypeName="AssignmentModel.WrittenResponse">
+              <MappingFragment StoreEntitySet="WrittenResponse">
+                <ScalarProperty Name="WrittenQuestionID" ColumnName="WrittenQuestionID" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="AnswerResponse" ColumnName="AnswerResponse" />
+                <ScalarProperty Name="Mark" ColumnName="Mark" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="WrittenResults">
+            <EntityTypeMapping TypeName="AssignmentModel.WrittenResult">
+              <MappingFragment StoreEntitySet="WrittenResult">
+                <ScalarProperty Name="WrittenID" ColumnName="WrittenID" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Result" ColumnName="Result" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

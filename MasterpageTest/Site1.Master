@@ -1,0 +1,129 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site1.master.cs" Inherits="MasterpageTest.Site1" %>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet"  />
+
+<style>
+    html, body, h1, h2, h3, h4, h5 {
+        font-family: "Raleway", sans-serif
+    }
+    /* latin-ext */
+    @font-face {
+        font-family: 'Raleway';
+        font-style: normal;
+        font-weight: 400;
+        src: local('Raleway'), local('Raleway-Regular'), url(https://fonts.gstatic.com/s/raleway/v12/1Ptug8zYS_SKggPNyCMIT5lu.woff2) format('woff2');
+        unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+    }
+    /* latin */
+    @font-face {
+        font-family: 'Raleway';
+        font-style: normal;
+        font-weight: 400;
+        src: local('Raleway'), local('Raleway-Regular'), url(https://fonts.gstatic.com/s/raleway/v12/1Ptug8zYS_SKggPNyC0ITw.woff2) format('woff2');
+        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+    }
+</style>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>TARUC</title>
+</head>
+<body class="w3-light-grey">
+    
+    <!-- Top container -->
+    <div class="w3-bar w3-top w3-black w3-large" style="z-index: 4">
+        <button class="w3-bar-item w3-button w3-hide-large w3-hover-none w3-hover-text-light-grey" onclick="openNAV()"><i class="fa fa-bars"></i>Menu</button>
+        <span class="w3-bar-item w3-right">Logo</span>
+
+    </div>
+
+    <!-- Sidebar/menu -->
+    <nav class="w3-sidebar w3-collapse w3-white w3-animate-left" style="z-index: 3; width: 300px;" id="mySidebar">
+        <br>
+        <div class="w3-container w3-row">
+            <div class="w3-col s4">
+                <a href="#">
+                    <img src="https://i.pinimg.com/originals/ea/54/55/ea5455d276524bc2eaad0476bd774cbd.jpg" class="w3-circle w3-margin-right" style="width: 46px"></a>
+            </div>
+            <div class="w3-col s8 w3-bar">
+                <br />
+                <span>Welcome, <strong><asp:Label ID="LoginName" runat="server" Text=""> </asp:Label></strong></span>
+            </div>
+        </div>
+        <hr>
+        
+
+        <div class="w3-bar-block">
+            <a href="Home.aspx" class="w3-bar-item w3-button w3-padding"><i class="fa fa-bank fa-fw"></i>&nbsp;Home</a>
+            <a href="Profile.aspx" class="w3-bar-item w3-button w3-padding"><i class="fa fa-user-circle-o"></i>&nbsp;&nbsp;Profile</a>
+            <%
+                if(HiddenData.Value == "Student")
+                { %>
+                    <a href="StudentAssessment.aspx" class="w3-bar-item w3-button w3-padding"><i class="fa fa-users fa-fw"></i>&nbsp;Public Assessment</a>
+              <%} %>
+            
+            <%
+                if (HiddenData.Value == "Lecturer")
+                {  %>
+                    <a href="Assessment.aspx" class="w3-bar-item w3-button w3-padding"><i class="fa fa-sitemap"></i>&nbsp;&nbsp;Create Assessment</a>
+                    <a href="ManageAssessment.aspx" class="w3-bar-item w3-button w3-padding"><i class="fa fa-sliders"></i>&nbsp;&nbsp;Manage Assessment</a>
+                    <a href="AssessmentAssignation.aspx" class="w3-bar-item w3-button w3-padding"><i class="fa fa-tasks"></i>&nbsp;&nbsp;Assignation Assessment</a>
+                    <a href="GradingWrittenTest.aspx" class="w3-bar-item w3-button w3-padding"><i class="fa fa-pie-chart"></i>&nbsp;&nbsp;Grading Written Test</a>
+            <%  } %>
+            <a href="Result.aspx" class="w3-bar-item w3-button w3-padding"><i class="fa fa-bar-chart"></i>&nbsp;&nbsp;Result</a>
+            <a href="MainLoginPage.aspx" class="w3-bar-item w3-button w3-padding"><i class="fa fa-sign-out"></i>&nbsp;&nbsp;Log-Out</a>
+            <br>
+            <br>
+        </div>
+    </nav>
+
+
+    <!-- !PAGE CONTENT! -->
+    <div class="w3-main" style="margin-left: 300px; margin-top: 43px;">
+
+        <!-- Header -->
+        <form id="form1" runat="server">
+            <asp:HiddenField ID="HiddenData" runat="server" />
+            <div class="w3-container">
+                <div style="margin-top: 10px">
+                    <asp:SiteMapPath ID="SiteMapPath1" runat="server">
+                    </asp:SiteMapPath>
+                </div>
+                <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+                </asp:ContentPlaceHolder>
+            </div>
+
+
+
+        </form>
+
+        <!-- End page content -->
+
+    </div>
+
+    <script type="text/javascript">
+        // Get the Sidebar
+        var mySidebar = document.getElementById("mySidebar");
+
+        // Get the DIV with overlay effect
+        var overlayBg = document.getElementById("myOverlay");
+
+        // Toggle between showing and hiding the sidebar, and add overlay effect
+        function openNAV() {
+            if (mySidebar.style.display === "block") {
+                mySidebar.style.display = "none";
+                overlayBg.style.display = "none";
+            } else {
+                mySidebar.style.display = "block";
+                overlayBg.style.display = "block";
+            }
+        }
+    </script>
+
+</body>
+</html>
